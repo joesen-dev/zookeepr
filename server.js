@@ -1,5 +1,6 @@
 const { animals } = require("./data/animals"); // requiring the "animals" data
 const express = require("express");
+const PORT = process.env.PORT || 3001; // tell app to run  Heroku's default(port 80) = PORT(if it's set) or (if not) default to port 3001
 const app = express(); //  instantiate the server
 
 function filterByQuery(query, animalsArray) {
@@ -54,6 +55,6 @@ app.get("/api/animals", (req, res) => {
   }
   res.json(results);
 }); // add the route
-app.listen(3001, () => {
-  console.log(`API server now on port 3001!`);
+app.listen(PORT, () => {
+  console.log(`API server now on port ${PORT}!`);
 }); //tell server to listen for requests
