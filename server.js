@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3001; // tell app to run  Heroku's default(port
 const app = express(); //  instantiate the server
 app.use(express.urlencoded({ extended: true })); // parse incoming string or array data
 app.use(express.json()); // parse incoming JSON data
+app.use(express.static("public")); // add middleware to specify the root ("public") directory to serve static files
 
 function filterByQuery(query, animalsArray) {
   let personalityTraitsArray = [];
@@ -100,6 +101,19 @@ app.get("/api/animals/:id", (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+}); // This is the route to the root of the server
+app.get("/animals", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/animals.html"));
+}); // This route will take us to /animals
+app.get("/zookeepers", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/zookeepers.html"));
+});
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+}); // any route that wasn't previously defined will fall under this request and will receive the homepage as the response
+
 app.post("/api/animals", (req, res) => {
   // set id based on what the next index of the array will be
   req.body.id = animals.length.toString();
@@ -115,5 +129,5 @@ app.post("/api/animals", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API server now on port ${PORT}!`);
+  console.log(`API server now on port http://localhost:${PORT}!`);
 }); //tell server to listen for requests
